@@ -1,0 +1,25 @@
+.search-wrapper {
+}
+
+.title-dropdown {
+    width: 30%;
+}
+
+.input-field {
+    width: 80%;
+    display: flex;
+}
+
+.searchbar-button {
+    display: flex;
+    flex-direction: row;
+}
+
+.searchbar {
+    width: 100%;
+}
+
+.button {
+    float: left;
+    margin-left: 10px;
+}
