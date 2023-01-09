@@ -32,6 +32,7 @@ We will be primarily evaluating based on how well the search works for users. A 
 ## API  
 #### Repo: https://github.com/kwong70/shakesearch-api
 #### API BASEURL: https://kw-shakesearch-api.onrender.com
+#### Note: Render.com suspends/sleeps the api after 15 minutes of idle time. The first request takes ~1min to awake the server. Subsequent requests take their normal time <1s .
 
 ## Features Completed 
 1. Highlight found word/s 
