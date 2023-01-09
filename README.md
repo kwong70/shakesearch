@@ -30,9 +30,10 @@ We will be primarily evaluating based on how well the search works for users. A 
 3. In your submission, share with us what changes you made and how you would prioritize changes if you had more time.
 
 ## API  
-#### Repo: https://github.com/kwong70/shakesearch-api
+#### Application: https://kw-shakesearch-ui.onrender.com/
+#### API Repo   : https://github.com/kwong70/shakesearch-api
 #### API BASEURL: https://kw-shakesearch-api.onrender.com
-#### Note: Render.com suspends/sleeps the api after 15 minutes of idle time. The first request takes ~1min to awake the server. Subsequent requests take their normal time <1s .
+#### Note       : Render.com suspends/sleeps the api after 15 minutes of idle time. The first request takes ~1min to awake the server. Subsequent requests take their normal time <1s .
 
 ## Features Completed 
 1. Highlight found word/s 
