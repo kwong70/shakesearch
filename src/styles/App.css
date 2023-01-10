@@ -4,6 +4,10 @@
   margin-right: 15%;
 }
 
+.Logo {
+  margin-top: 20px;
+}
+
 .Header {
   display: flex;
   flex-direction: column;

@@ -41,7 +41,7 @@ export default function Search() {
       setListProps({
         Query: searchBar.toLowerCase(),
         ExactMatch: exactMatch,
-        Titles: wantedTitles,
+        Titles: selectedTitles,
       });
     } else {
       console.log("Invalid input")

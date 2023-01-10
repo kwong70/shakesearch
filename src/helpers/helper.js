@@ -5,6 +5,9 @@ export async function getData(query, exactMatch, titles) {
   const baseURL = process.env.REACT_APP_BASE_URL;
   const endpoint = baseURL + "/search" + params;
 
+  console.log(endpoint)
+  console.log(titles)
+
   var customResponse = {
     isError: false,
     errorMessage: "",
