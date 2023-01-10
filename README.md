@@ -48,8 +48,8 @@ We will be primarily evaluating based on how well the search works for users. A 
 
 ## Future Improvments 
 1. Concept matching (love -> monologue about love)
-1b. Finds oppososite concepts (love -> love and hatred)
-2. Search based off speaker (hamlet, love -> search for hamlet talking about love)
+1b. Finds opposite of the concept (love -> love and hatred)
+2. Search based off character (hamlet, love -> search for hamlet talking about love)
 
 ## Test Queries 
 #### "He is married?" 

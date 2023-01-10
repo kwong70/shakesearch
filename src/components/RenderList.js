@@ -1,4 +1,4 @@
-import axios from "axios";
+import { getData } from "../helpers/helper";
 import HighlightSnippet from "./HighlightSnippet";
 import {
   Alert,
@@ -6,82 +6,88 @@ import {
   List,
   ListItem,
   ListItemText,
+  LinearProgress,
   Pagination as PaginationBar,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
+
+/*
+<RenderList> 
+Handles: 
+1. api request
+2. displaying results
+3. loading message
+4. error messages
+5. pagination 
+
+Usage: 
+Works as a child of <Search> and a parent of <HighlightSnippet>.
+<Search> handles the user input and passes the user's request to <RenderList> to do the work.
+<RenderList> then calls the api with the given request arguments. 
+Assuming a successful response then sends each snippet to be highlighted and formatted to <HighlightSnippet>.
+
+props.Query, props.ExactMatch, props.Titles
+*/
 function RenderList(props) {
   const ITEMS_PER_PAGE = 5;
   const [works, setWorks] = useState([]);
-  const [page, setPage] = useState(1); 
+  const [page, setPage] = useState(1);
   const [bounds, setBounds] = useState([0, page * ITEMS_PER_PAGE]);
   const [errorMessage, setErrorMessage] = useState("");
-  var baseURL = ""
-  if (process.env.NODE_ENV == "development") {
-    baseURL = "http://localhost:3001"
-  } else {
-    baseURL = "https://kw-shakesearch-api.onrender.com"
-  }
-    useEffect(() => {
-      // props.Query, props.ExactMatch, props.Titles
-      const params =
-        "?" + "q=" + props.Query + "&" + "exactMatch=" + props.ExactMatch;
-      const endpoint = baseURL + "/search" + params
-      var config = {
-        method: "post",
-        url: endpoint,
-        headers: {
-          "Content-Type": "text/plain",
-        },
-        data: props.Titles,
-      };
-      if (props.Query != "") {
-        axios(config)
-          .then((response) => {
-            if (response.status == 200) {
-              setErrorMessage("");
-              const data = response.data;
-              if (data == null || data.length == 0) {
-                setErrorMessage("No matches found for: " + props.Query);
-              } else {
-                let data = response.data;
-                setWorks(data);
-              }
-            } else {
-              setErrorMessage("Error status code:  ", response.status);
-            }
-          })
-          .catch((error) => {
-            setErrorMessage("Error status code:  ", error);
-          });
-      }
-    }, [props]);
+  const [showLoading, setShowLoading] = useState(false);
 
+  useEffect(() => {
+    setShowLoading(true);
+    getData(props.Query, props.ExactMatch, props.Titles).then((response) => {
+      setShowLoading(false);
+      if (!response.isError) {
+        setErrorMessage("");
+        setWorks(response.data);
+      } else {
+        setErrorMessage(response.errorMessage);
+      }
+    });
+  }, [props]);
 
   const changePage = (e, p) => {
-    const newBounds = [(p - 1) * ITEMS_PER_PAGE, p * ITEMS_PER_PAGE]
-    setBounds(newBounds)
+    const newBounds = [(p - 1) * ITEMS_PER_PAGE, p * ITEMS_PER_PAGE];
+    setBounds(newBounds);
     setPage(p);
   };
 
-  if( errorMessage != "" ) {
+  var queryHeaderFormatted = "Results (" + works.length + "): ";
+  var query = "";
+  if (!props.ExactMatch) {
+    var splitQuery = props.Query.split(" ");
+    if (splitQuery.length != 1) {
+      splitQuery.map((word, i) => {
+        query = query + word + ", ";
+      });
+    }
+  }
+  query = query + props.Query;
+  queryHeaderFormatted = queryHeaderFormatted + query;
+
+  if (errorMessage != "") {
     return (
-      <div style={{marginTop: "15px"}}>
+      <div style={{ marginTop: "100px" }}>
         <Alert severity="error">{errorMessage}</Alert>
       </div>
     );
   }
 
-  var queryHeaderFormatted = "Results (" + works.length + "): ";
-
-  if( !props.ExactMatch ) {
-    var splitQuery = props.Query.split(" ");
-    if (splitQuery.length != 1) {
-      splitQuery.map((word, i) => {
-        queryHeaderFormatted = queryHeaderFormatted + word + ", ";
-      });
-    }
-  } 
-  queryHeaderFormatted = queryHeaderFormatted + props.Query
+  if (showLoading) {
+    return (
+      <div className="loading" style={{ marginTop: "100px" }}>
+        <LinearProgress />
+        <h3>Searching for "{query}"</h3>
+        <p>
+          If this is your first request please allow us to wake up our brain.
+          Subsequent reqeusts should be fast!
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>

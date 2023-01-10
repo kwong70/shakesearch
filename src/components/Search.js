@@ -11,6 +11,16 @@ import React, { useState } from "react";
 import RenderList from "./RenderList";
 import "../styles/Search.css";
 
+/*
+<Search> 
+Handles: 
+1. Formats and saves user input: query/textbox, selected titles, and exact match flag
+
+Usage: 
+Works as a parent of <RenderList> and a grandparent of <HighlightSnippet>.
+<Search> handles the user input and passes the user's request to <RenderList> to do the work.
+
+*/
 export default function Search() {
   const [searchBar, setSearchBar] = useState("");
   const [wantedTitles, setWantedTitles] = useState([]);
@@ -36,7 +46,6 @@ export default function Search() {
     } else {
       console.log("Invalid input")
     }
-    
   }
   return (
     <div>
